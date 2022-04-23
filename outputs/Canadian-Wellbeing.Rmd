@@ -1,12 +1,10 @@
 ---
-title: "My title"
-subtitle: "My subtitle if needed"
+title: "Major factors influencing the physical and mental health of Canadians"
 author: 
-  - First author
-  - Another author
-thanks: "Code and data are available at: LINK."
+  - Yuxuan Yang
+thanks: "Code and data are available at: https://github.com/Yuxuan-Yang-Maggie/Canadian-Wellbeing."
 date: "`r format(Sys.time(), '%d %B %Y')`"
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+abstract: "The general wellbeing of Canadians, in terms of both physical and mental health, can greatly reflect the development level of Canada as a country, as well as serving as accurate measures of living conditions of Canadians; yet wellbeing of Canadians differ to a large extent between groups of varying demographic characteristics. In this paper, we used data from “General social survey on Canadians at Work and Home (cycle 30), 2016” to analyze potential factors affecting the wellbeing of Canadians. We found that smoking, drinking, and eating behaviors could all affect people’s health level, while sex, income, and job satisfactions as well as other factors are related to people’s mental stress. As factors influencing Canadian wellbeing are becoming clear, we hope the Canadian government could pay attention to and improve Canadians’ living qualities, especially for minority groups."
 output:
   bookdown::pdf_document2
 toc: FALSE
@@ -16,24 +14,70 @@ bibliography: references.bib
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
-library(palmerpenguins)
+library(ggplot2)
+library(dplyr)
+library(modelr)
 ```
 
 # Introduction
 
-You can and should cross-reference sections and sub-sections. For instance, Section \@ref(data). R Markdown automatically makes the sections lower case and adds a dash to spaces to generate labels, for instance, Section \@ref(first-discussion-point). 
+Improving the Canadian wellbeing and living standards has always been a main goal of the Canadian government. As stated by Statistics Canada, measures such as the Canadian Index of Well-being (CIW) were designed and put into use in as early as the 2000s in order to provide more accurate measures of Canadian people’s wellbeing, from aspects including health conditions, economic status, and social status (Sanmartin et al., 2021). In the meantime, with the fast-paced development of technology and medical benefits, Canadians are experiencing longer lives and more healthy lifestyles. Nevertheless, contrary to the longer lifespan, the self-rated happiness level of Canadians is deteriorating (2017). In this paper, our goal is to examine which factors would affect Canadian wellbeing and give suggestions to the government to improve both physical and mental health conditions of Canadians, especially those who belong to minority groups. 
 
+Factors such as age, gender, and income are all related to happiness of Canadians; in specific, more than 60% of Canadians with household incomes greater than 80,000 dollars per year reported to be in excellent health conditions, while less than 50% of Canadians with household incomes less than 40,000 dollars per year reported to be in good health. There are also less common variables that have not been widely examined before, including smoking, drinking, and eating behaviors of Canadian people, as well as frequency of doing sports or exercises. 
+
+A survey was created in 2016 to measure both the physical and mental health of Canadians in 10 provinces in Canada aged 15 and above. To facilitate sampling procedure, each of the 10 provinces were divided into strata, and each of the respondent was reached via telephone. Online survey and telephone survey are also used in order to decrease the non-response rate. From the survey responses, age, sex and income are all related to people’s mental health; smoking, drinking, and eating habits are related to physical health. Particularly, people with unhealthy life styles and lower incomes experience worse levels of wellbeing. 
+
+The paper is structured as follows: first, we talk about the survey methodology and sample and population frames. Second, we manipulated collected survey data to analyze potential factors influencing general wellbeing of Canadians. Finally, we give some advice to the government on how to improve the physical and mental health of Canadian people. 
 
 
 # Data
+```{r,echo=FALSE, warning=FALSE, message=FALSE}
+# import data here
+data_cleaned <- read_csv("/cloud/project/inputs/data/data_cleaned.csv")
+```
 
-Our data is of penguins (Figure \@ref(fig:bills)).
+```{r Table1, echo = FALSE, warning=FALSE}
+library(knitr)
+table_1 <- data_cleaned[1:10, c(1, 12:15)]
+table_1 %>%
+  kable(caption = "Glimpse: Canadians and their well-being measured in various aspects in 2016")
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+data_cleaned <- data_cleaned %>%
+  mutate(stress = fct_relevel(stress, "A bit stressful", after = 2)) %>%
+  mutate(stress = fct_relevel(stress, "Extremely stressful", after = 5)) %>%
+  mutate(health = fct_relevel(health, "Not at all satisfied", after = 0)) %>%
+  mutate(health = fct_relevel(health, "Completely satisfied", after = 11))
+
+```
+
+```{r Table2, echo=FALSE, message=FALSE, warning=FALSE}
+
+table_2 <- data_cleaned %>%
+  group_by(health) %>%
+  summarise(count = n(), proportion = n()/1586)
+
+table_2 %>%
+  kable(caption = "Number and proportion of respondents by self-rated health level")
+```
+
+```{r, Figure1, fig.cap="Proportions of Canadians Who Responded to the Work and Life General Social Survey in 2016, By Stress Level", echo=FALSE, message=FALSE, warning=FALSE}
+
+data_cleaned %>%
+  group_by(stress) %>%
+  summarise(proportion = n()/1586) %>%
+  ggplot(aes(x = stress, y = proportion)) +
+  geom_bar(position="dodge", stat="identity") +
+  scale_x_discrete(guide = guide_axis(n.dodge = 2)) +
+  labs(title = "Proportion of Respondents By Stress Level",
+       x = "Stress Level",
+       y = "Proportion of People") +
+  theme_minimal()
+```
 
 
-Talk more about it.
-
-Also bills and their average (Figure \@ref(fig:billssssss)). (Notice how you can change the height and width so they don't take the whole page?)
-
+Keywords: we will talk about survey methodology, sample and population frames, etc, and look at our data. 
 
 Talk way more about it. 
 
@@ -43,22 +87,25 @@ Talk way more about it.
 
 \begin{equation}
 Pr(\theta | y) = \frac{Pr(y | \theta) Pr(\theta)}{Pr(y)}  (\#eq:bayes)
-\end{equation}
+\end{equation} will be useful. 
 
-Equation \@ref(eq:bayes) seems useful, eh?
+Equation \@ref(eq:bayes) will be useful.
 
-Here's a dumb example of how to use some references: In paper we run our analysis in `R` [@citeR]. We also use the `tidyverse` which was written by @thereferencecanbewhatever If we were interested in baseball data then @citeLahman could be useful. 
+Here's a dumb example of how to use some references: In paper we run our analysis in `R` (cite R here). We also use the `tidyverse` which was written by ... If we were interested in baseball data then ... could be useful. 
 
 We can use maths by including latex between dollar signs, for instance $\theta$.
 
+Keywords: Here we will build linear regression models, analyze factors influecing Canadian wellbeing. 
 
 # Results
+Keywords: Strictly display results. Explain them. 
 
 # Discussion
+Keywords: Extend the topic. Talk way more. 
 
 ## First discussion point
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
+If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what I know and what I learnt from all this. 
 
 ## Second discussion point
 
