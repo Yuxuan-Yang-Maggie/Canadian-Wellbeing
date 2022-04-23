@@ -31,6 +31,40 @@ The paper is structured as follows: first, we talk about the survey methodology 
 
 
 # Data
+
+## Data Collection
+
+The data we used in this paper was retrieved from the Canadian General Social Survey (GSS). The Canadian GSS was designed to be “a series of independent, annual, cross-sectional surveys, each covering one topic in-depth” that collects survey responses from Canadian citizens and permanent residents (cite Canadian GSS website here). It serves a purpose of analyzing the social trends of Canadians’ well-beings from varying aspects. In this paper, we will focus on the “General social survey on Canadians at Work and Home (cycle 30), 2016”, which gathers information on various aspects of Canadians through phone calls and interviews, throughout August to December, 2016. 
+
+Note that we could have used other datasets since many people have conducted relevant researches on factors associated with people’s well-beings. However, the Canadian GSS is a government-lead platform, so we trust in the integrity and authenticity of its information. 
+
+## Data Processing
+
+We conducted all data analysis using the R Programming Language (cite R here). First, we used the “readxl” (cite here) package to read in the data in excel format. Then we used the “janitor” package (cite here) and “tidyverse” package (cite here) to perform high-level cleaning and manipulation on the data. In specific, we filtered out all observations with missing responses and NAs and created new variables recording the gender, health level and stress level in categorical formats. We stored the cleaned data as csv file in the inputs sub-folder of our project. 
+
+## Survey Method
+
+Stratified sampling method was used in the collection procedure of “General social survey on Canadians at Work and Home (cycle 30), 2016”. In specific, the Canadian government divided the target population (residents) who live in 10 provinces in Canada (Newfoundland and Labrador, Prince Edward Island, Nova Scotia, New Brunswick, Quebec, Ontario, Manitoba, Saskatchewan, Alberta, and British Columbia) in to 27 strata by Metropolitan areas, and randomly sampled respondents from each strata to collect information. Note that regions including Yukon, Northwest Territories, and Nunavut are not included in the survey. 
+
+The data were gathered electronically via computer-assisted telephone interviews (CATI), and all the survey question responses were self-reported by participants. Specifically, the government first sent letters to randomly selected households in each strata to invite them to participate in this survey. Then one member from each household was randomly selected to fill in the specific questions in the questionnaire. There turned out to be 19,609 respondents in this survey. 
+
+### Strengths
+
+The most notable strength of this survey is that it used stratified sampling; dividing the target population into different subgroups and randomly selecting participants from each strata could significantly improve the representativeness of a survey compared to simple random sampling.
+
+
+### Weaknesses
+
+Since the overall response rate was only approximately 50% after the government invited households to participate, there would be significant non-response bias associated with the results collected by the survey. In order to make up for this weakness, we filtered out all observations with missing values in the variables we are interested in. Nevertheless, this action of filtering out missing values would decrease the total number of usable observations drastically from 19,609 to no more than 2000, which led to another problem of a too small actual sample size in our further analysis. What’s more, the complex nature of stratified sampling procedure would make it difficult to interpret analysis results, compared with simple random sampling directly from the entire population. 
+
+
+## Data Characteristics
+
+The original raw dataset we extracted from the CHASS data center contains 19,609 observations, yet the cleaned dataset we used in our analysis would only contain 1,586 observations of respondents (Canadian residents) and their demographic information (such as sex, age group, and province of residence), as well as information on their well-beings from different aspects. Using the cleaned dataset, we created Table 1 (cross-reference here) to take a glimpse and get a sense of what our actual data looks like. From Table 1 (cross-reference here), we observed the stress level, health level, and alcohol consumption status of 10 respondents. In specific, each row is an individual respondent, and each column represents a specific aspect associated with well-being of a person. 
+
+We also created Table 2 (cross-reference here) to demonstrate the number and proportion of respondents at each self-rated health level. From Table 2 (cross-reference here), we observed that the proportion of participants is highest for health level 7-10 (18.9%, 29.4%, 14.4%, and 14.2%), indicating that most people seem to be very satisfied with their health conditions in 2016 on a scale from 0 to 10 (0 is not at all satisfied with health condition, and 10 is completely satisfied). In addition, we created a bar plot to demonstrate the proportions of people by stress level. Figure 1 (cross-reference here) plots proportion (y axis) against stress level (x-axis) and shows that almost half of participants reported to be a bit stressful in daily lives, and more than 20 percent of people reported to be not very stressful. Figure 1 (cross reference here) shows that most Canadians experienced appropriate levels of stress in 2016. 
+
+
 ```{r,echo=FALSE, warning=FALSE, message=FALSE}
 # import data here
 data_cleaned <- read_csv("/cloud/project/inputs/data/data_cleaned.csv")
@@ -75,13 +109,6 @@ data_cleaned %>%
        y = "Proportion of People") +
   theme_minimal()
 ```
-
-
-Keywords: we will talk about survey methodology, sample and population frames, etc, and look at our data. 
-
-Talk way more about it. 
-
-
 
 # Model
 
