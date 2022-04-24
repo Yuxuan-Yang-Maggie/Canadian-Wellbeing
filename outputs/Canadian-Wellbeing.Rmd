@@ -40,7 +40,7 @@ Note that we could have used other datasets since many people have conducted rel
 
 ## Data Processing
 
-We conducted all data analysis using the R Programming Language [@citeR]. First, we used the “readxl” [@citereadxl] package to read in the data in excel format. Then we used the “janitor” package [@citejanitor] and “tidyverse” package [@citetidyverse] to perform high-level cleaning and manipulation on the data. In specific, we filtered out all observations with missing responses and NAs and created new variables recording the gender, health level and stress level in categorical formats. We stored the cleaned data as csv file in the inputs sub-folder of our project. 
+We conducted all data analysis using the R Programming Language [@citeR]. First, we used the “readxl” [@citereadxl] package to read in the data in excel format. Then we used the “janitor” package [@citejanitor] and “tidyverse” package [@citetidyverse] to perform high-level cleaning and manipulation on the data. In specific, we filtered out all observations with missing responses and NAs and created new variables recording the gender, health level and stress level in categorical formats. We stored the cleaned data as csv file in the inputs sub-folder of our project. We also used the "ggplot2" package [@citeggplot2] to plot graphs and images in Data Results Sections. 
 
 ## Survey Method
 
@@ -62,9 +62,6 @@ Since the overall response rate was only approximately 50% after the government 
 
 The original raw dataset we extracted from the CHASS data center contains 19,609 observations, yet the cleaned dataset we used in our analysis would only contain 1,586 observations of respondents (Canadian residents) and their demographic information (such as sex, age group, and province of residence), as well as information on their well-beings from different aspects. Using the cleaned dataset, we created Table \@ref(tab:Table1) to take a glimpse and get a sense of what our actual data looks like. From Table \@ref(tab:Table1), we observed the stress level, health level, and alcohol consumption status of 10 respondents. In specific, each row is an individual respondent, and each column represents a specific aspect associated with well-being of a person. 
 
-We also created Table \@ref(tab:Table2) to demonstrate the number and proportion of respondents at each self-rated health level. From Table \@ref(tab:Table2), we observed that the proportion of participants is highest for health level 7-10 (18.9%, 29.4%, 14.4%, and 14.2%), indicating that most people seem to be very satisfied with their health conditions in 2016 on a scale from 0 to 10 (0 is not at all satisfied with health condition, and 10 is completely satisfied). In addition, we created a bar plot to demonstrate the proportions of people by stress level. Figure \@ref(fig:Figure1) plots proportion (y axis) against stress level (x-axis) and shows that almost half of participants reported to be a bit stressful in daily lives, and more than 20 percent of people reported to be not very stressful. Figure \@ref(fig:Figure1) shows that most Canadians experienced appropriate levels of stress in 2016. 
-
-
 ```{r,echo=FALSE, warning=FALSE, message=FALSE}
 # import data here
 data_cleaned <- read_csv("/cloud/project/inputs/data/data_cleaned.csv")
@@ -76,6 +73,9 @@ table_1 <- data_cleaned[1:10, c(1, 12:15)]
 table_1 %>%
   kable(caption = "Glimpse: Canadians and their well-being measured in various aspects in 2016")
 ```
+
+We also created Table \@ref(tab:Table2) to demonstrate the number and proportion of respondents at each self-rated health level. From Table \@ref(tab:Table2), we observed that the proportion of participants is highest for health level 7-10 (18.9%, 29.4%, 14.4%, and 14.2%), indicating that most people seem to be very satisfied with their health conditions in 2016 on a scale from 0 to 10 (0 is not at all satisfied with health condition, and 10 is completely satisfied). In addition, we created a bar plot to demonstrate the proportions of people by stress level. 
+
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 data_cleaned <- data_cleaned %>%
@@ -96,7 +96,9 @@ table_2 %>%
   kable(caption = "Number and proportion of respondents by self-rated health level")
 ```
 
-```{r, Figure1, fig.cap="Proportions of Canadians Who Responded to the Work and Life General Social Survey in 2016, By Stress Level", echo=FALSE, message=FALSE, warning=FALSE}
+Figure \@ref(fig:Figure1) plots proportion (y axis) against stress level (x-axis) and shows that almost half of participants reported to be a bit stressful in daily lives, and more than 20 percent of people reported to be not very stressful. Figure \@ref(fig:Figure1) shows that most Canadians experienced appropriate levels of stress in 2016.
+
+```{r Figure1, fig.cap="Proportions of Canadians Who Responded to the Work and Life General Social Survey in 2016, By Stress Level", echo=FALSE, message=FALSE, warning=FALSE}
 
 data_cleaned %>%
   group_by(stress) %>%
@@ -111,6 +113,31 @@ data_cleaned %>%
 ```
 
 # Model
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+data_cleaned <- data_cleaned %>%
+  mutate(smoke = case_when(smoke_status == 1 ~ "Daily",
+                           smoke_status == 2 ~ "Occasionally",
+                           TRUE ~ "Not at all")) %>%
+  mutate(drink = case_when(drink_status == 1 ~ "Daily",
+                           drink_status == 2 ~ "4-6 times a week",
+                           drink_status == 3 ~ "2-3 times a week",
+                           drink_status == 4 ~ "Once a week",
+                           drink_status == 5 ~ "Once or twice in the past month",
+                           drink_status == 6 ~ "Not in the past month",
+                           TRUE ~ "Never had a drink"))
+
+
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+data_cleaned <- data_cleaned %>%
+  filter(eat_habits != 7) %>%
+  mutate(eat = case_when(eat_habits == 1 ~ "Excellent",
+                         eat_habits == 2 ~ "Very good",
+                         eat_habits == 3 ~ "Good",
+                         eat_habits == 4 ~ "Fair",
+                         TRUE ~ "Poor"))
+```
 
 \begin{equation}
 Pr(\theta | y) = \frac{Pr(y | \theta) Pr(\theta)}{Pr(y)}  (\#eq:bayes)
@@ -125,7 +152,121 @@ We can use maths by including latex between dollar signs, for instance $\theta$.
 Keywords: Here we will build linear regression models, analyze factors influecing Canadian wellbeing. 
 
 # Results
-Keywords: Strictly display results. Explain them. 
+
+```{r Figure2, fig.cap="Smoking Frequency", echo=FALSE, warning=FALSE, message=FALSE}
+
+# First plot smoking frequency
+Name = c("Daily", "Occasionally", "Not at all")
+
+s1 <- sum(data_cleaned$smoke =='Daily') 
+s2 <- sum(data_cleaned$smoke =='Occasionally')
+s3 <- sum(data_cleaned$smoke =='Not at all')
+
+smokes = c(s1,s2,s3)
+
+colors = c("#990000","#FF3333","#FF9999")
+
+# calculate the percentage
+smoke_percentage = paste(round(100*smokes/sum(smokes)), "%")
+
+# draw the pie graph
+pie(smokes, labels = smoke_percentage, col = colors, main = "Frequency of Smoking")
+
+legend("topright", Name, cex = 0.6, fill = colors)
+
+```
+
+```{r Figure3, fig.cap="Alcohol Consumption Frequency", echo=FALSE, warning=FALSE, message=FALSE}
+# Then plot drinking frequency
+name = c("Daily", "4-6 times a week", "2-3 times a week", "Once a week", "Once or twice in the past month", "Not in the past month", "Never had a drink")
+
+d1 <- sum(data_cleaned$drink =='Daily') 
+d2 <- sum(data_cleaned$drink =='Occasionally')
+d3 <- sum(data_cleaned$drink =='2-3 times a week')
+d4 <- sum(data_cleaned$drink =='Once a week')
+d5 <- sum(data_cleaned$drink =='Once or twice in the past month')
+d6 <- sum(data_cleaned$drink =='Not in the past month')
+d7 <- sum(data_cleaned$drink =='Never had a drink')
+
+drinks = c(d1, d2, d3, d4, d5, d6, d7)
+
+cols = c("#193300", "#336600","#4C9900","#66CC00", "#80FF00", "#B2FF66", "#E5FFCC")
+
+# calculate the percentage
+drink_percentage = paste(round(100*drinks/sum(drinks)), "%")
+
+# draw the pie graph
+pie(drinks, labels = drink_percentage, col = cols, main = "Frequency of Alcohol")
+
+legend("bottomright", name, cex=0.5, fill = cols)
+
+```
+
+
+From Figure \@ref(fig:Figure2) where we generated a pie chart to show the percentages of respondents with different smoking behaviors, we observed that only around 10% of total respondents smoke daily or occasionally, while most respondents don’t smoke at all. From Figure \@ref(fig:Figure3) where we also drew a pie chart to demonstrate the percentages of people at each level of alcohol consumption, we observed that 27% respondents didn’t drink in the past month and 18% respondents never had the habit of drinking, while almost no respondents (0%) drink every day. Figure \@ref(fig:Figure2) and Figure \@ref(fig:Figure3) together shows that respondents in this survey seems to have healthy, sustainable drinking and smoking habits. 
+
+
+```{r Figure4, fig.cap="Number of People Under Each Self-Rated Health Level, with Eat Habits Highlighted in Colors", echo=FALSE, message=FALSE, warning=FALSE}
+data_cleaned %>%
+  ggplot(aes(x = health, 
+            fill = factor(eat_habits, levels = c("1","2","3","4","5"),
+                          labels = c("Excellent",
+                                     "Very good",
+                                     "Good",
+                                     "Fair",
+                                     "Poor")))
+       ) +
+  geom_bar(position = "stack") +
+  scale_x_discrete(guide = guide_axis(n.dodge = 2)) +
+  labs(title = "Distribution of Health Level",
+       x = "Self-Rated Health Level",
+       y = "Number of People",
+       fill = "eat_habits") +
+  theme_minimal()
+
+```
+
+
+Then we drew a bar plot called Figure \@ref(fig:Figure4) to demonstrate the distribution of number of people at different health levels, with eating habits highlighted in different colors at each health level. Figure \@ref(fig:Figure4) shows that the mode of this distribution is more than 400 people at health level 8. Since 0 means not at all satisfied and 10 means completely satisfied on a scale from 0 to 10, we know that most people are quite satisfied with their health conditions. What’s more, people with higher health levels (better self-rated health conditions) tend to have better overall eating habits compared with those with lower health levels (worse health conditions). 
+
+```{r Figure5, fig.cap="Number of People Under Each Self-Rated Stress Level, By Sex", echo=FALSE, message=FALSE, warning=FALSE}
+data_cleaned %>%
+  group_by(Gender, stress) %>%
+  summarise(count = n()) %>%
+  ggplot(aes(x = stress, y = count, fill = Gender)) +
+  geom_bar(position="dodge", stat="identity") +
+  scale_x_discrete(guide = guide_axis(n.dodge = 2)) +
+  labs(title = "Number of Respondents By Sex and Stress Level",
+       x = "Self-Rated Stress Level",
+       y = "Number of Respondents") +
+  theme_minimal()
+
+```
+
+We also drew Figure \@ref(fig:Figure5) to show the distribution of number of people at different stress levels. Figure \@ref(fig:Figure5) shows that for both males and females, the number of respondents is the largest (nearly 400) under the level of “a bit stressful” and the second largest (nearly 200) under the level “not very stressful”. This indicates that most respondents are experiencing appropriate, moderate mental stress regardless of sex. 
+
+```{r Figure6, fig.cap="Number of People Under Each Self-Rated Stress Level, with Job Satisfaction Highlighted", echo=FALSE, message=FALSE, warning=FALSE}
+data_cleaned %>%
+  ggplot(aes(x = stress, 
+             fill = factor(job_satisfaction, levels = c("1","2","3","4","5"),
+                          labels = c("Very satisfied",
+                                     "Satisfied",
+                                     "Neither satisfied nor dissatisfied",
+                                     "Dissatisfied",
+                                     "Very dissatisfied")))
+       ) +
+  geom_bar(position = "stack") +
+  scale_x_discrete(guide = guide_axis(n.dodge = 3)) +
+  labs(title = "Number of People on Each Stress Level",
+       x = "Self-Rated Stress Level",
+       y = "Number of People",
+       fill = "job_satisfaction") +
+  theme_minimal()
+```
+
+Lastly, we created Figure \@ref(fig:Figure6) to also illustrate the distribution of number of people at different stress levels, but this time with number of people with different job satisfaction levels highlighted in colors at each stress level. Same from Figure \@ref(fig:Figure5), we observed from Figure \@ref(fig:Figure6) that most people experience normal stress conditions. Additionally, we observed that people with lower levels of mental stress tend to be more satisfied with their jobs compared with those with high levels of mental stress, indicating that job satisfaction could be correlated with people’s mental health conditions.  
+
+
 
 # Discussion
 Keywords: Extend the topic. Talk way more. 
