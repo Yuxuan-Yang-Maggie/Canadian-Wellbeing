@@ -139,17 +139,27 @@ data_cleaned <- data_cleaned %>%
                          TRUE ~ "Poor"))
 ```
 
+We will build one OLS (ordinary least squares) regression model to examine about the potential correlations between eating habits, drinking habits, job satisfaction, and living standards of people and their self-rated health conditions. The model expression is as follows:
+
+
 \begin{equation}
-Pr(\theta | y) = \frac{Pr(y | \theta) Pr(\theta)}{Pr(y)}  (\#eq:bayes)
-\end{equation} will be useful. 
+Y_i = \beta_0 + \beta_1*X_{1i} + \beta_2*X_{2i} + \beta_3*X_{3i} + \beta_4*X_{4i}
+\end{equation}
 
-Equation \@ref(eq:bayes) will be useful.
+Where $Y_i$ is the expected health level (scaled from 0 to 10; 0 means not at all satisfied and 10 means completely satisfied) of an individual person, $X_{1i}$ is the eat habits (scaled from 1 to 5; 1 means excellent and 5 means poor), $X_{2i}$ is the frequency of alcohol consumption (scaled from 1 to 7; 1 means drink alcohol daily and 7 means never consumed alcohol), $X_{3i}$ is the job satisfaction level (scaled from 1 to 5; 1 means very satisfied and 5 means not at all satisfied), and $X_{4i}$ is the living standard of the person (scaled from 0 to 10; 0 means not at all satisfied and 10 means completely satisfied). 
 
-Here's a dumb example of how to use some references: In paper we run our analysis in `R` (cite R here). We also use the `tidyverse` which was written by ... If we were interested in baseball data then ... could be useful. 
+Additionally, $\beta_0$ is the expected intercept given everything else equals to 0 (expected health level when a person has excellent eat habit, drink daily, feels very satisfied with job but very dissatisfied about living conditions); $\beta_1$ is the estimated coefficient of $X_{1i}$ (expected change in health level when eat habit changes by 1 level, given all else constant); $\beta_2$ is the estimated coefficient of $X_{2i}$ (expected change in health level when alcohol consumption changes by 1 level, given all else constant); $\beta_3$ is the estimated coefficient of $X_{3i}$ (expected change in health level when job satisfaction changes by 1 level, given all else constant); $\beta_4$ is the estimated coefficient of $X_{4i}$ (expected change in health level when living condition changes by 1 level, given all else constant);
 
-We can use maths by including latex between dollar signs, for instance $\theta$.
+We will also build another linear regression model to examine about a few factors that could possibly influence people’s mental stress conditions. The model is as follows:
 
-Keywords: Here we will build linear regression models, analyze factors influecing Canadian wellbeing. 
+\begin{equation}
+y_i = \alpha_0 + \alpha_1*x_{1i} + \alpha_2*x_{2i} + \alpha_3*x_{3i}
+\end{equation}
+
+Where $y_i$ is the expected stress level (scaled from 1 to 5; 1 means not at all stressful and 5 means extremely stressful) of an individual person, $x_{1i}$ is the job satisfaction level (scaled from 1 to 5; 1 means very satisfied and 5 means not at all satisfied), $x_{2i}$ is the sex (1 if male and 0 if female), and $x_{3i}$ is the income level (scaled from 1 to 6; 1 means less than 25,000 dollars per year and 5 means 125,000 or more dollars per year). 
+
+Additionally, $\alpha_0$ is the expected intercept given everything else equals to 0 (expected stress level when a person is female, very satisfied with job, and earns less than 25,000 dollars per year); $\alpha_1$ is the estimated coefficient of $x_{1i}$ (expected change in stress level when job satisfaction changes by 1 level, given all else constant); $\alpha_2$ is the estimated coefficient of $x_{2i}$ (expected change in stress level when a person is male, given all else constant); $\alpha_3$ is the estimated coefficient of $x_{3i}$ (expected change in stress level when income changes by 1 level, given all else constant).
+
 
 # Results
 
@@ -264,9 +274,27 @@ data_cleaned %>%
   theme_minimal()
 ```
 
-Lastly, we created Figure \@ref(fig:Figure6) to also illustrate the distribution of number of people at different stress levels, but this time with number of people with different job satisfaction levels highlighted in colors at each stress level. Same from Figure \@ref(fig:Figure5), we observed from Figure \@ref(fig:Figure6) that most people experience normal stress conditions. Additionally, we observed that people with lower levels of mental stress tend to be more satisfied with their jobs compared with those with high levels of mental stress, indicating that job satisfaction could be correlated with people’s mental health conditions.  
+Then we created Figure \@ref(fig:Figure6) to also illustrate the distribution of number of people at different stress levels, but this time with number of people with different job satisfaction levels highlighted in colors at each stress level. Same from Figure \@ref(fig:Figure5), we observed from Figure \@ref(fig:Figure6) that most people experience normal stress conditions. Additionally, we observed that people with lower levels of mental stress tend to be more satisfied with their jobs compared with those with high levels of mental stress, indicating that job satisfaction could be correlated with people’s mental health conditions.  
+
+\newpage
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(jtools)
+
+mod_1 <- lm(health_level ~ eat_habits + drink_status + job_satisfaction + living_standard, data = data_cleaned)
+
+mod_2 <- lm(stress_level ~ job_satisfaction + Gender + income, data = data_cleaned)
+
+summ(mod_1)
+summ(mod_2)
+```
 
 
+Lastly, we created two regression tables to show the results of performing OLS (ordinary least squares) regression analyses on health level and stress level. The first regression table shows that with health level as the dependent variable, the p-values of eating habits, alcohol drinking behaviors, and living standards are all significantly smaller than 0.05, while the p-value of job satisfaction is not very small. This indicates that given all else equal, eat habits, alcohol consumption, and living standards seem to be highly correlated with people’s self-rated health conditions. Since the estimate for eat habits is -0.62, given a scale of 1 to 5 (higher score means worse eat habits), the worse the eat habits, the worse the expected health condition of people would be. Similarly, better alcohol consumption habits and living standards correlate with better health conditions. 
+
+The second regression summary table shows that with stress level as the dependent variable, the p-values of job satisfaction, gender male, and income are all significantly smaller than 0.05, indicating that income, gender, and job satisfaction all seem to be correlated with people’s mental stress. Specifically, since higher scores mean higher stress levels given a scale from 1-5 (1 mean not at all stressful and 5 means extremely stressful), and higher scores for job satisfactions mean less satisfaction (1 means very satisfied and 5 means very dissatisfied), the estimate of 0.22 for job satisfaction indicates as people become less satisfied with their jobs, their mental stress would increase. Similarly, males tend to be less stressful than females in general, while income doesn’t seem to influence people’s stress level to a great extent. 
+
+\newpage
 
 # Discussion
 Keywords: Extend the topic. Talk way more. 
