@@ -297,19 +297,28 @@ The second regression summary table shows that with stress level as the dependen
 \newpage
 
 # Discussion
-Keywords: Extend the topic. Talk way more. 
 
-## First discussion point
+## What was done in this paper
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what I know and what I learnt from all this. 
+Canadians nowadays are facing great pressure from enormous sources, including but not limited to rising house prices, rising inflations, and COVID pandemic. Excessive amounts of stress can lead to inappropriate pressure-relieving behaviors such as consuming too much alcohol or smoking that could negatively affect people’s physical health. In this paper, we aimed to examine about both the physical health and mental health of Canadians in order to provide suggestions and solutions on what to focus in the future to improve their mental stress and physical health conditions. 
 
-## Second discussion point
+In this paper, we used the 2016 Canadian GSS (General Social Survey) and its “Canadians at Work and Home” aspect to investigate both the physical and mental health conditions of Canadian people, targeting at the total population of 10 provinces in Canada (as outlined in the Data Section, excluding regions of Yukon, Northwest Territories, and Nunavut). Specifically, we selected 22 variables from the original raw survey data and filtered out all the observations with missing values in the columns we are interested in. We then briefly looked at the data through a few tables and graphs, and conducted two OLS (ordinary least squares) regression models to examine about variables that could influence mental stress and physical health conditions of Canadians. Both the Canadian GSS survey and our report could provide meaningful insights to future researches on what affects and how to improve Canadian people’s well-beings. 
 
-## Third discussion point
+## What we learned about the world
 
-## Weaknesses and next steps
+From the tables, graphs, and regression models we conducted in this paper, we learned that the overall smoking and alcohol consuming behaviors of Canadians are quite moderate and healthy in 2016, as suggested by the statistics that only 5% respondents to the survey smoked daily and almost nobody (nearly 0%) consumed alcohol daily. We also learned that among people with better health conditions, the proportion of them possessing good eat habits tend to be larger than those with worse health conditions. Given the overall good smoking, drinking, and eating habits of most respondents, we suggest that the Canadian government could release promotional videos and advertisements to help people learn healthy lifestyles and maintain good habits. 
 
-Weaknesses and next steps should also be included.
+We also learned that females tend to be a bit more stressful than males in general, as suggested by the data in our filtered observations that more than 150 women felt “quite a bit stressful”, yet almost no men felt “extremely stressful”. In addition, we noticed that the proportion of Canadians feeling very satisfied with their jobs is larger among groups with lower stress levels, indicating that high satisfaction with jobs correlate with good mental health conditions. Therefore, we suggest that the government could pay more attention to plights of women in workplaces and families and introduce polices that could reduce gender inequalities in society. 
+
+Lastly, we learned that linear correlations do seem to exist between physical health and drinking, eating habits, and living standards of Canadian people; and between mental stress and sex, income, and job satisfaction. Healthy living styles, high income, and good living conditions all indicate better conditions for human bodies. Therefore, our advice is that the Canadian government could open more free counseling programs for Canadian residents to facilitate the improvement in national health conditions. 
+
+## Weaknesses and how to proceed in the future
+
+One of the most notable weaknesses of our analyses lies in the nature of the survey method of using telephone interviews to collect information on Canadian residents’ demographic information and answers on survey questions. In short, since the survey randomly selected one person from each household, that person might not actually precisely represent the whole household’s opinions, which could lead to significant bias in the information we collected. Besides the fact that non-response bias occurs widely in the sampling procedure, we also face the risk of sampling bias, since using CATI and telephone to collect answers automatically ignores people who didn’t possess telephones or those who failed to fluently use telephones, such as elder people. However, elder people are important to our society, and they are the group to be most likely suffering from mental stress due to the inability to catch up with the rapidly developing society. 
+
+The fact that we asked the respondents to self-report their stress levels and health conditions also indicate potential bias in the answers we got; people might not be fully aware of their true health conditions. What’s more, our procedure of filtering out all observations with missing values in the columns we are interested in also caused our sample size to significantly decrease, due to the large size of “don’t know” and “refused to answer” in the survey answers we got. All these different weaknesses could cause our analyses to be biased and under-representative of the target population. 
+
+In the future, in order to mitigate all the negative effects on the accuracy and representativeness of our survey and analyses brought by these weaknesses, we could send invitations to participate in the survey to more people instead of just one person from each selected household. We could also hire highly-skilled interviewers to involve in the process of conducting the CATI, and hopefully, the rate of non-response would decrease. For people who got ignored by telephone interviews, we could use random interviews on the street to make up for potential sampling bias. More importantly, we need to do further research on things that could affect people’s health and stress levels, and raise social concern on the importance of maintaining a good national health condition. Only when Canadians become fully aware of their health conditions could the nation become better. 
 
 \newpage
 
