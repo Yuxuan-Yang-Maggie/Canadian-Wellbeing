@@ -40,7 +40,7 @@ Note that we could have used other datasets since many people have conducted rel
 
 ## Data Processing
 
-We conducted all data analysis using the R Programming Language [@citeR]. First, we used the “readxl” [@citereadxl] package to read in the data in excel format. Then we used the “janitor” package [@citejanitor] and “tidyverse” package [@citetidyverse] to perform high-level cleaning and manipulation on the data. In specific, we filtered out all observations with missing responses and NAs and created new variables recording the gender, health level and stress level in categorical formats. We stored the cleaned data as csv file in the inputs sub-folder of our project. We also used the "ggplot2" package [@citeggplot2] to plot graphs and images in Data Results Sections. 
+We conducted all data analysis using the R Programming Language [@citeR]. First, we used the “readxl” [@citereadxl] package to read in the data in excel format. Then we used the “janitor” package [@citejanitor] and “tidyverse” package [@citetidyverse] to perform high-level cleaning and manipulation on the data. In specific, we filtered out all observations with missing responses and NAs and created new variables recording the gender, health level and stress level in categorical formats. We stored the cleaned data as csv file in the inputs sub-folder of our project. We also used the "ggplot2" package [@citeggplot2] to plot graphs and images in Data and Results Sections, and used "stats" package [@citestats] and "jtools" package [@jtools] to build models. 
 
 ## Survey Method
 
