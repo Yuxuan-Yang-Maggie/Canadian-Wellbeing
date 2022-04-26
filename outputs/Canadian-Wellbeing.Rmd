@@ -34,7 +34,7 @@ The paper is structured as follows: first, we talk about the survey methodology 
 
 ## Data Collection
 
-The data we used in this paper was retrieved from the Canadian General Social Survey (GSS). The Canadian GSS was designed to be “a series of independent, annual, cross-sectional surveys, each covering one topic in-depth” that collects survey responses from Canadian citizens and permanent residents (cite Canadian GSS website here). It serves a purpose of analyzing the social trends of Canadians’ well-beings from varying aspects. In this paper, we will focus on the “General social survey on Canadians at Work and Home (cycle 30), 2016”, which gathers information on various aspects of Canadians through phone calls and interviews, throughout August to December, 2016. 
+The data we used in this paper was retrieved from the Canadian General Social Survey (GSS). The Canadian GSS was designed to be “a series of independent, annual, cross-sectional surveys, each covering one topic in-depth” that collects survey responses from Canadian citizens and permanent residents [@citeGSS]. It serves a purpose of analyzing the social trends of Canadians’ well-beings from varying aspects. In this paper, we will focus on the “General social survey on Canadians at Work and Home (cycle 30), 2016”, which gathers information on various aspects of Canadians through phone calls and interviews, throughout August to December, 2016. 
 
 Note that we could have used other datasets since many people have conducted relevant researches on factors associated with people’s well-beings. However, the Canadian GSS is a government-lead platform, so we trust in the integrity and authenticity of its information. 
 
@@ -507,9 +507,6 @@ In the future, in order to mitigate all the negative effects on the accuracy and
 
 8. *Any other comments?*
 	- No.
-
-# Additional details
-
 
 \newpage
 
